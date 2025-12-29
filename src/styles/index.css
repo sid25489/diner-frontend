@@ -1,0 +1,6 @@
+/* Global custom styles */
+
+body {
+  @apply bg-diner-cream text-diner-coffee font-sans;
+}
+
