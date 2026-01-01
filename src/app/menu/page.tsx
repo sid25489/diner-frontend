@@ -1,6 +1,4 @@
-import dynamic from "next/dynamic";
-
-const MenuGrid = dynamic(() => import("./MenuGrid"), { ssr: false });
+import MenuGrid from "./MenuGrid";
 
 export default function Menu() {
   return (
