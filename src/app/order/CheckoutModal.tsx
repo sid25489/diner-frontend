@@ -31,7 +31,7 @@ export default function CheckoutModal({ isOpen, onClose, onSuccess }: CheckoutMo
     try {
       // Prepare order items for backend
       const orderItems = cart.map((item) => ({
-        menuItemId: (item as any)._id || item.name, // Use _id if available (from backend)
+        menuItemId: (item as { _id?: string })._id || item.name, // Use _id if available (from backend)
         quantity: item.quantity,
       }));
 
@@ -44,14 +44,18 @@ export default function CheckoutModal({ isOpen, onClose, onSuccess }: CheckoutMo
 
       if (response.success && response.data) {
         const order = response.data.order || response.data;
+        const orderNumber = typeof order === 'object' && order !== null && 'orderNumber' in order
+          ? String(order.orderNumber || (order as { _id?: string })._id)
+          : 'unknown';
         clearCart();
-        onSuccess(order.orderNumber || order._id);
+        onSuccess(orderNumber);
         onClose();
       } else {
         setError(response.error || "Failed to place order. Please try again.");
       }
-    } catch (err: any) {
-      setError(err.message || "An error occurred. Please try again.");
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An error occurred. Please try again.";
+      setError(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -126,7 +130,7 @@ export default function CheckoutModal({ isOpen, onClose, onSuccess }: CheckoutMo
                 <select
                   required
                   value={formData.deliveryType}
-                  onChange={(e) => setFormData({ ...formData, deliveryType: e.target.value as any })}
+                  onChange={(e) => setFormData({ ...formData, deliveryType: e.target.value as "dine-in" | "takeaway" })}
                   className="w-full px-4 py-2 border border-diner-coffee/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-diner-terracotta"
                 >
                   <option value="dine-in">Dine-In</option>
@@ -141,7 +145,7 @@ export default function CheckoutModal({ isOpen, onClose, onSuccess }: CheckoutMo
                 <select
                   required
                   value={formData.paymentMethod}
-                  onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value as any })}
+                  onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value as "card" | "nfc" | "cash" })}
                   className="w-full px-4 py-2 border border-diner-coffee/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-diner-terracotta"
                 >
                   <option value="card">Card</option>

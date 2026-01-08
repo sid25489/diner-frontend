@@ -47,7 +47,7 @@ export default function EditMenuItem() {
       try {
         const response = await menuApi.getById(itemId);
         if (response.success && response.data) {
-          const item = response.data as any;
+          const item = response.data as { name?: string; description?: string; price?: number; category?: string; imageUrl?: string; isVegetarian?: boolean; isGlutenFree?: boolean; isKids?: boolean; isAvailable?: boolean; happyHourPrice?: number };
           setFormData({
             name: item.name || "",
             description: item.description || "",
@@ -63,7 +63,7 @@ export default function EditMenuItem() {
         } else {
           setError("Menu item not found");
         }
-      } catch (err) {
+      } catch {
         setError("Failed to load menu item");
       } finally {
         setLoading(false);
@@ -100,7 +100,7 @@ export default function EditMenuItem() {
       } else {
         setError(response.error || "Failed to update menu item");
       }
-    } catch (err: any) {
+    } catch {
       setError("An error occurred. Please try again.");
     } finally {
       setSaving(false);

@@ -58,7 +58,7 @@ export default function NewMenuItem() {
       } else {
         setError(response.error || "Failed to create menu item");
       }
-    } catch (err: any) {
+    } catch {
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);

@@ -26,6 +26,7 @@ interface MenuItem {
 }
 
 export default function OrderMenu() {
+  const router = useRouter();
   const { addToCart } = useCart();
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,7 +42,7 @@ export default function OrderMenu() {
         } else {
           setError(response.error || "Failed to load menu");
         }
-      } catch (err: any) {
+      } catch {
         setError("Failed to load menu. Please try again.");
       } finally {
         setLoading(false);
@@ -69,8 +70,6 @@ export default function OrderMenu() {
       </section>
     );
   }
-
-  const router = useRouter();
 
   if (error) {
     return (
@@ -105,7 +104,7 @@ export default function OrderMenu() {
           <div className="space-y-3">
             {items.map((item, itemIdx) => (
               <motion.div
-                key={item.name}
+                key={item._id || `${category}-${item.name}-${itemIdx}`}
                 className="flex flex-col md:flex-row md:items-center justify-between gap-3 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 initial={{ opacity: 0, x: -16 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -141,7 +140,7 @@ export default function OrderMenu() {
                   onClick={() => addToCart({
                     ...item,
                     price: item.currentPrice || item.price,
-                  } as any)}
+                  } as MenuItem)}
                   disabled={!item.isAvailable}
                   className="bg-diner-coffee text-diner-cream px-6 py-2 rounded-full font-semibold hover:bg-diner-terracotta transition-colors shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                   whileHover={{ scale: item.isAvailable ? 1.05 : 1 }}

@@ -24,7 +24,7 @@ export default function CoffeeEffects() {
   useEffect(() => {
     // This code will only run on the client side
     setIsClient(true);
-    
+
     // Generate random values only on client side
     setCoffeeBeans(Array.from({ length: 8 }, (_, i) => ({
       id: i,
@@ -33,7 +33,7 @@ export default function CoffeeEffects() {
       delay: Math.random() * 5,
       duration: 3 + Math.random() * 2,
     })));
-    
+
     setSteamParticles(Array.from({ length: 6 }, (_, i) => ({
       id: i,
       x: 50 + (i - 3) * 15,
@@ -116,28 +116,31 @@ export default function CoffeeEffects() {
       </motion.div>
 
       {/* Coffee Aroma Particles */}
-      {Array.from({ length: 12 }, (_, i) => (
-        <motion.div
-          key={`aroma-${i}`}
-          className="absolute w-1 h-1 bg-diner-coffee/30 rounded-full"
-          style={{
-            left: `${20 + (i % 4) * 20}%`,
-            top: `${30 + Math.floor(i / 4) * 20}%`,
-          }}
-          animate={{
-            y: [0, -100],
-            x: [0, (i % 2 === 0 ? 1 : -1) * 30],
-            opacity: [0.3, 0],
-            scale: [1, 2],
-          }}
-          transition={{
-            duration: 4 + Math.random() * 2,
-            repeat: Infinity,
-            ease: "easeOut",
-            delay: i * 0.4,
-          }}
-        />
-      ))}
+      {Array.from({ length: 12 }, (_, i) => {
+        const duration = 4 + (i % 3) * 0.5; // Deterministic duration based on index
+        return (
+          <motion.div
+            key={`aroma-${i}`}
+            className="absolute w-1 h-1 bg-diner-coffee/30 rounded-full"
+            style={{
+              left: `${20 + (i % 4) * 20}%`,
+              top: `${30 + Math.floor(i / 4) * 20}%`,
+            }}
+            animate={{
+              y: [0, -100],
+              x: [0, (i % 2 === 0 ? 1 : -1) * 30],
+              opacity: [0.3, 0],
+              scale: [1, 2],
+            }}
+            transition={{
+              duration,
+              repeat: Infinity,
+              ease: "easeOut",
+              delay: i * 0.4,
+            }}
+          />
+        );
+      })}
 
       {/* Coffee Ring Ripples */}
       {Array.from({ length: 3 }, (_, i) => (

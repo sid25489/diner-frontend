@@ -4,14 +4,8 @@ import { useState, useEffect } from "react";
 import CoffeeEffects from "@/components/CoffeeEffects";
 
 export default function Home() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    // Empty effect for future use
   }, []);
 
   return (
@@ -137,10 +131,10 @@ export default function Home() {
             }}
           >
             {[
-              { icon: "☕", text: "Great Coffee" },
-              { icon: "⚡", text: "Fast Service" },
-              { icon: "🎨", text: "Local Specialties" },
-            ].map(({ icon, text }) => (
+              { icon: "☕", text: "Great Coffee", delay: 0 },
+              { icon: "⚡", text: "Fast Service", delay: 0.7 },
+              { icon: "🎨", text: "Local Specialties", delay: 1.4 },
+            ].map(({ icon, text, delay }) => (
               <motion.div
                 key={text}
                 className="flex items-center gap-2"
@@ -159,7 +153,7 @@ export default function Home() {
                     duration: 3,
                     repeat: Infinity,
                     ease: "easeInOut",
-                    delay: Math.random() * 2,
+                    delay,
                   }}
                 >
                   {icon}
@@ -215,7 +209,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
             >
-              At our diner, coffee isn't just a drink—it's the heart of our morning ritual. We source locally roasted beans that bring warmth and energy to every cup, creating that perfect balance of rich flavor and smooth finish that keeps our regulars coming back day after day.
+              At our diner, coffee isn&apos;t just a drink—it&apos;s the heart of our morning ritual. We source locally roasted beans that bring warmth and energy to every cup, creating that perfect balance of rich flavor and smooth finish that keeps our regulars coming back day after day.
             </motion.p>
 
             <motion.p
@@ -225,7 +219,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ delay: 0.6 }}
             >
-              Whether you're starting your day with a classic house blend or exploring our signature <span className="font-semibold text-diner-terracotta">Iced Horchata Latte</span>, each sip tells a story of tradition meeting innovation. Our baristas craft every cup with care, ensuring that first morning coffee hits just right—bold enough to wake you up, smooth enough to savor.
+              Whether you&apos;re starting your day with a classic house blend or exploring our signature <span className="font-semibold text-diner-terracotta">Iced Horchata Latte</span>, each sip tells a story of tradition meeting innovation. Our baristas craft every cup with care, ensuring that first morning coffee hits just right—bold enough to wake you up, smooth enough to savor.
             </motion.p>
 
             <motion.p
@@ -235,7 +229,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ delay: 0.8 }}
             >
-              From the moment you walk in, the aroma of freshly brewed coffee welcomes you into our cozy space. It's that familiar, comforting scent that pairs perfectly with our breakfast classics and sets the tone for a great day. <span className="font-semibold text-diner-gold">Bottomless cups, endless conversations, and the perfect start to your morning.</span>
+              From the moment you walk in, the aroma of freshly brewed coffee welcomes you into our cozy space. It&apos;s that familiar, comforting scent that pairs perfectly with our breakfast classics and sets the tone for a great day. <span className="font-semibold text-diner-gold">Bottomless cups, endless conversations, and the perfect start to your morning.</span>
             </motion.p>
           </motion.div>
 

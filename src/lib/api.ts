@@ -7,6 +7,12 @@ export interface ApiResponse<T> {
   errors?: Array<{ msg: string; param: string }>;
 }
 
+// Minimal order-related types used by the frontend
+export interface CreatedOrderData {
+  order: Record<string, unknown>;
+  paymentIntent?: { clientSecret?: string; id?: string } | null;
+}
+
 // Generic API request function
 async function apiRequest<T>(
   endpoint: string,
@@ -35,7 +41,7 @@ async function apiRequest<T>(
       success: true,
       data: data.data || data,
     };
-  } catch (error) {
+  } catch {
     return {
       success: false,
       error: "Network error. Please check your connection.",
@@ -52,7 +58,7 @@ export const menuApi = {
   getById: async (id: string) => {
     return apiRequest(`/menu/${id}`);
   },
-  create: async (item: any, token: string) => {
+  create: async (item: Record<string, unknown>, token: string) => {
     return apiRequest("/menu", {
       method: "POST",
       headers: {
@@ -61,7 +67,7 @@ export const menuApi = {
       body: JSON.stringify(item),
     });
   },
-  update: async (id: string, item: any, token: string) => {
+  update: async (id: string, item: Record<string, unknown>, token: string) => {
     return apiRequest(`/menu/${id}`, {
       method: "PUT",
       headers: {
@@ -82,8 +88,8 @@ export const menuApi = {
 
 // Order API
 export const orderApi = {
-  create: async (orderData: any) => {
-    return apiRequest("/orders", {
+  create: async (orderData: Record<string, unknown>) => {
+    return apiRequest<CreatedOrderData>("/orders", {
       method: "POST",
       body: JSON.stringify(orderData),
     });

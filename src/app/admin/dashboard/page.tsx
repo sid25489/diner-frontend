@@ -31,18 +31,18 @@ export default function AdminDashboard() {
       return;
     }
     setToken(token);
-    fetchMenuItems(token);
+    fetchMenuItems();
   }, [router]);
 
-  const fetchMenuItems = async (authToken: string) => {
+  const fetchMenuItems = async () => {
     try {
       setLoading(true);
       const response = await menuApi.getAll();
       if (response.success && response.data) {
         setMenuItems(response.data as MenuItem[]);
       }
-    } catch (err) {
-      console.error("Failed to fetch menu items:", err);
+    } catch {
+      console.error("Failed to fetch menu items");
     } finally {
       setLoading(false);
     }
@@ -54,11 +54,11 @@ export default function AdminDashboard() {
     try {
       const response = await menuApi.delete(id, token);
       if (response.success) {
-        fetchMenuItems(token);
+        fetchMenuItems();
       } else {
         alert(response.error || "Failed to delete item");
       }
-    } catch (err) {
+    } catch {
       alert("Failed to delete item");
     }
   };
@@ -132,11 +132,10 @@ export default function AdminDashboard() {
                     <td className="py-3 px-4 text-diner-gold font-semibold">${item.price.toFixed(2)}</td>
                     <td className="py-3 px-4">
                       <span
-                        className={`px-2 py-1 rounded text-xs ${
-                          item.isAvailable
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
-                        }`}
+                        className={`px-2 py-1 rounded text-xs ${item.isAvailable
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-700"
+                          }`}
                       >
                         {item.isAvailable ? "Available" : "Unavailable"}
                       </span>

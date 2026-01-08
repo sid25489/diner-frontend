@@ -69,10 +69,9 @@ export default function AdminOrders() {
           formattedDate: new Date(order.createdAt).toLocaleString(),
         }));
         setOrders(ordersWithFormattedDates);
-        setError(null);
       }
-    } catch (err) {
-      console.error("Failed to fetch orders:", err);
+    } catch {
+      console.error("Failed to fetch orders");
       setError("Failed to load orders. Please try again later.");
     } finally {
       setLoading(false);
@@ -89,7 +88,7 @@ export default function AdminOrders() {
       } else {
         alert(response.error || "Failed to update order status");
       }
-    } catch (err) {
+    } catch {
       alert("Failed to update order status");
     }
   };
@@ -150,9 +149,8 @@ export default function AdminOrders() {
                         <span className={`px-2 py-1 rounded text-xs font-medium ${STATUS_COLORS[order.status] || STATUS_COLORS.pending}`}>
                           {order.status}
                         </span>
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          order.paymentStatus === "paid" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"
-                        }`}>
+                        <span className={`px-2 py-1 rounded text-xs font-medium ${order.paymentStatus === "paid" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"
+                          }`}>
                           {order.paymentStatus}
                         </span>
                       </div>
