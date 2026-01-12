@@ -69,7 +69,7 @@ export const menuApi = {
   },
   update: async (id: string, item: Record<string, unknown>, token: string) => {
     return apiRequest(`/menu/${id}`, {
-      method: "PUT",
+      method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -124,11 +124,35 @@ export const authApi = {
       body: JSON.stringify({ email, password }),
     });
   },
+  register: async (name: string, email: string, password: string) => {
+    return apiRequest("/auth/register", {
+      method: "POST",
+      body: JSON.stringify({ name, email, password }),
+    });
+  },
   getMe: async (token: string) => {
     return apiRequest("/auth/me", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+    });
+  },
+  googleAuth: async (token: string) => {
+    return apiRequest("/auth/google", {
+      method: "POST",
+      body: JSON.stringify({ token }),
+    });
+  },
+  forgotPassword: async (email: string) => {
+    return apiRequest("/auth/forgot-password", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
+  },
+  resetPassword: async (token: string, password: string) => {
+    return apiRequest(`/auth/reset-password/${token}`, {
+      method: "POST",
+      body: JSON.stringify({ password }),
     });
   },
 };
@@ -154,4 +178,3 @@ export const adminApi = {
     });
   },
 };
-
